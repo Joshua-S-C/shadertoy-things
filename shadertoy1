@@ -14,16 +14,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     //float y = mod(sin(uv.y), 6.0);
     
     float f = 12.0;
-    float a = 0.3 * sin(iTime);
-    float f2 = 2.0 * sin(iTime);
-    float a2 = 0.4 * sin(iTime) + .5;
-    float f3 = 1.0 * sin(iTime);
-    float a3 = -0.3 * sin(iTime);
+    float a = 0.5 * sin(iTime);
+    float f2 = 7.0 * sin(iTime);
+    float a2 = 0.05 * sin(iTime) + .5;
+    float f3 = 2.0 * sin(iTime);
+    float a3 = -0.1 * sin(iTime);
     
     float vertOffset = .5;
     
     // I'm still not sure why this works
-    float t = vertOffset + sin(uv.x*f+iTime)*a + sin(uv.x*f2+iTime)*a2;
+    float t = vertOffset + sin(uv.x*f+iTime)*a + sin(uv.x*f2+iTime)*a2 + sin(uv.x*f3+iTime)*a3;
     t = step(t,uv.y);
 
     // Output to screen
