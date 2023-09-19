@@ -69,3 +69,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 color = mix(fgClr, bgClr, t);
     fragColor = vec4(color,1.0);
 }
+
+// Oscillating Circle
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Aspect ratio = 16:9
+    vec2 uv = fragCoord/iResolution.xy;
+    uv = uv * 2.0 - 1.0; //Remapping UV coords such that origin in the centre 
+    float aspectRatio = iResolution.x / iResolution.y;
+    uv.x *= aspectRatio;
+    
+    // Drawing Oval
+    float t = distance(uv, vec2(0.0, -.5 + sin(iTime))); // Coords of circle origin
+    float r = 0.3;
+    t = step(r, t);
+    fragColor = vec4(t,t,t,1.0);
+}
