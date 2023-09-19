@@ -40,7 +40,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float vertOffset = .5;
     
     float t = vertOffset + sin(uv.x*f+iTime)*a;
-    t = step(t, uv.y);
+    t = step(t, uv.y);    // Can change to smoothstep for a DoF effect
     
     // Colour
     vec3 bgClr = mix(vec3(1.0,0.0,0.0), vec3(0.0,1.0,1.0),uv.y);
