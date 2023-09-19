@@ -8,25 +8,26 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     // Sun
     float t = distance(uv, vec2(0.0, -.5 + sin(iTime))); // Coords of circle origin
-    float sunRadius = 0.6;
-    float sunBlur = 0.05;
-    t = smoothstep(sunBlur, sunRadius, t);
+    float sunInner = 0.4; 
+    float sunOutter = 0.6;
+    t = smoothstep(sunInner, sunOutter, t);
     vec3 sunClr = vec3(1.0,1.0,0.0); 
     
     // BG
-    vec3 bgClr = mix(vec3(.5 + sin(iTime) * .5,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime));
+    vec3 bgClr = mix(vec3(.4 + sin(iTime) * .5,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime));
     
     // Wave
+    // Expand this later to make more complicatd waves
     float waveF = 12.0;
     float waveA = 0.5 * sin(iTime);
-    float waveVertOffset = .5;
+    float waveVertOffset = -.5;
     float waveOut = waveVertOffset + sin(uv.x * waveF+iTime) * waveA;
     waveOut = step(waveOut,uv.y);
     
     // Wave Colour
     //vec3 waveClr = (waveOut, 0.0, 0.0);
     //vec3 waveBgClr = mix(vec3(1.0,1.0,1.0), vec3(0.0,1.0,1.0),uv.y);
-    vec3 waveFgClr = mix(vec3(1.0,1.0,0.0), vec3(1.0,0.0,1.0), uv.y);    
+    vec3 waveFgClr = mix(vec3(0.3,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
     vec3 waveClr = mix(waveFgClr, bgClr, waveOut);
     
     vec3 color = mix(sunClr, bgClr, t); // Mix BG and Sun
