@@ -29,9 +29,22 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     vec3 waveFgClr = mix(vec3(0.3,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
     
+    // Wave 2
+    float wave2F = 2.0;
+    float wave2A = 0.1 * sin(iTime);
+    float wave2VertOffset = -.2;
+    float secondWave2 = sin(uv.x * (7.0 + sin(iTime))) * (.2 * cos(iTime)); // Could possibly use arrays + struct for waves and the variables of each wave
+
+    float wave2Lerp = wave2VertOffset + sin(uv.x * wave2F+iTime) * wave2A  + secondWave2;
+    wave2Lerp = step(wave2Lerp,uv.y);
+
+    vec3 wave2FgClr = mix(vec3(0.4,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
+    
     // Mixing
     color = mix(color, sunClr, sunLerp);
+    color = mix(wave2FgClr, color, wave2Lerp);
     color = mix(waveFgClr, color, waveLerp);
+    
     
     // Final Output
     fragColor = vec4(color,1.0);
