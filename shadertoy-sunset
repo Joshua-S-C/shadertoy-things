@@ -1,3 +1,13 @@
+// Return the float to add into the mix function
+// This can be put into an object
+float createWave(float f, float a, float offset, vec2 uv) {
+    float waveLerp = offset + sin(uv.x * f + iTime) * a;
+    waveLerp = step(waveLerp,uv.y); // This may be able to be moved outside of the function
+    return waveLerp;
+}
+
+// Add function for complex wave becuz having step inside the function means they can't be added
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Fix screen and remap UV coords
@@ -11,14 +21,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     // Sun
     float sunRadius = .2;
-    float sunInner = .4;    
+    float sunInner = .3;    
     float sunOutter = sunInner + sunRadius; 
 
     float sunLerp = distance(uv, vec2(0.0, -.5 + sin(iTime))); // Coords of circle origin, this needs to be a uniform
     sunLerp = smoothstep(sunOutter, sunInner, sunLerp);
     vec3 sunClr = vec3(1.0,1.0,0.0); 
     
-    // Wave
+    // Wave made without function
     float waveF = 2.0;
     float waveA = 0.1 * sin(iTime);
     float waveVertOffset = -.5;
@@ -27,24 +37,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float waveLerp = waveVertOffset + sin(uv.x * waveF+iTime) * waveA  + secondWave;
     waveLerp = step(waveLerp,uv.y);
 
-    vec3 waveFgClr = mix(vec3(0.3,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
+    vec3 waveFgClr = mix(vec3(0.3,0.40,0.80), vec3(0.30,0.75,1.00), uv.y / 1.5);    
     
-    // Wave 2
-    float wave2F = 3.0;
-    float wave2A = 0.2 * sin(iTime);
-    float wave2VertOffset = -.2;
-    float secondWave2 = sin(uv.x * (4.0 + sin(iTime))) * (.3 * cos(iTime)); // Could possibly use arrays + struct for waves and the variables of each wave
-
-    float wave2Lerp = wave2VertOffset + sin(uv.x * wave2F+iTime) * wave2A  + secondWave2;
-    wave2Lerp = step(wave2Lerp,uv.y);
-
-    vec3 wave2FgClr = mix(vec3(0.4,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
+    // Wave 2, made with function
+    float wave2Lerp = createWave(3.0, 0.2 * sin(iTime), -0.2, uv);
+    vec3 wave2FgClr = mix(vec3(0.2,0.50,0.80), vec3(0.30,0.65,1.00), uv.y); 
     
     // Mixing
     color = mix(color, sunClr, sunLerp);
     color = mix(wave2FgClr, color, wave2Lerp);
     color = mix(waveFgClr, color, waveLerp);
-    
     
     // Final Output
     fragColor = vec4(color,1.0);
