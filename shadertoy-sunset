@@ -7,21 +7,26 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     uv.x *= aspectRatio;
         
     // BG
-    vec3 color = mix(vec3(.4 + sin(iTime) * .2,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime));
+    vec3 color = mix(vec3(.4 + sin(iTime) * .2,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime)); // Change this use distance so it's a radial gradient
     
     // Sun
-    float sunLerp = distance(uv, vec2(0.0, -.5 + sin(iTime))); // Coords of circle origin
-    float sunOutter = 0.6; 
-    float sunInner = 0.4;
+    float sunRadius = .2;
+    float sunInner = .4;    
+    float sunOutter = sunInner + sunRadius; 
+
+    float sunLerp = distance(uv, vec2(0.0, -.5 + sin(iTime))); // Coords of circle origin, this needs to be a uniform
     sunLerp = smoothstep(sunOutter, sunInner, sunLerp);
     vec3 sunClr = vec3(1.0,1.0,0.0); 
     
     // Wave
-    float waveF = 12.0;
-    float waveA = 0.5 * sin(iTime);
+    float waveF = 2.0;
+    float waveA = 0.1 * sin(iTime);
     float waveVertOffset = -.5;
-    float waveLerp = waveVertOffset + sin(uv.x * waveF+iTime) * waveA;
+    float secondWave = sin(uv.x * (7.0 + sin(iTime))) * (.2 * cos(iTime)); // Could possibly use arrays + struct for waves and the variables of each wave
+
+    float waveLerp = waveVertOffset + sin(uv.x * waveF+iTime) * waveA  + secondWave;
     waveLerp = step(waveLerp,uv.y);
+
     vec3 waveFgClr = mix(vec3(0.3,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
     
     // Mixing
