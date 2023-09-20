@@ -6,7 +6,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float aspectRatio = iResolution.x / iResolution.y;
     uv.x *= aspectRatio;
         
-    // BG
+    // BG, being mixed with everything for final output
     vec3 color = mix(vec3(.4 + sin(iTime) * .2,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime)); // Change this use distance so it's a radial gradient
     
     // Sun
@@ -30,10 +30,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 waveFgClr = mix(vec3(0.3,0.00,0.80), vec3(0.30,0.65,1.00), uv.y * 2.0);    
     
     // Wave 2
-    float wave2F = 2.0;
-    float wave2A = 0.1 * sin(iTime);
+    float wave2F = 3.0;
+    float wave2A = 0.2 * sin(iTime);
     float wave2VertOffset = -.2;
-    float secondWave2 = sin(uv.x * (7.0 + sin(iTime))) * (.2 * cos(iTime)); // Could possibly use arrays + struct for waves and the variables of each wave
+    float secondWave2 = sin(uv.x * (4.0 + sin(iTime))) * (.3 * cos(iTime)); // Could possibly use arrays + struct for waves and the variables of each wave
 
     float wave2Lerp = wave2VertOffset + sin(uv.x * wave2F+iTime) * wave2A  + secondWave2;
     wave2Lerp = step(wave2Lerp,uv.y);
