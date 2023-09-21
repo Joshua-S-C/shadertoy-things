@@ -17,7 +17,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     uv.x *= aspectRatio;
         
     // BG, being mixed with everything for final output
-    x`vec3 color = mix(vec3(.4 + sin(iTime) * .2,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime)); // Change this use distance so it's a radial gradient
+    vec3 color = mix(vec3(.4 + sin(iTime) * .2,0.0,0.3), vec3(0.0,1.0,1.0),uv.y + sin(iTime)); // Change this use distance so it's a radial gradient
     
     // Sun
     float sunRadius = .2;
